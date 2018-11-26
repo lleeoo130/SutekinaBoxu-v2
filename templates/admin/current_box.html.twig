@@ -1,0 +1,129 @@
+{% extends "admin/main.html.twig" %}
+
+
+{% block content %}
+    {{ parent() }}
+
+
+
+    <table class="table">
+        <thead>
+            <th scope="col">
+                Product Choice <br>
+                {% if box is defined %}
+                    {% if box.currentPlace is same as('waiting_to_order') %}
+                        <i class="far fa-4x fa-arrow-alt-circle-down" style="color: orange"></i>
+                    {% elseif (box.currentPlace is same as('ordered'))
+                                                or (box.currentPlace is same as('received'))
+                                                or (box.currentPlace is same as('approved'))
+                                                or (box.currentPlace is same as('ready_to_send')) %}
+                        <i class="fas fa-4x fa-check" style="color: lawngreen"></i>
+                    {% endif %}
+                {% else %}
+                    <i class="fas fa-4x fa-times" style="color: red"></i>
+                {% endif %}
+
+
+            </th>
+            <th scope="col">
+                Product Received <br>
+                {% if box is defined %}
+                    {%  if (box.currentPlace is same as('ordered'))
+                        or (box.currentPlace is same as('received')) %}
+                        <i class="far fa-4x fa-arrow-alt-circle-down" style="color: orange"></i>
+                    {% elseif box.currentPlace is same as('approved') or (box.currentPlace is same as('ready_to_send')) %}
+                        <i class="fas fa-4x fa-check" style="color: lawngreen"></i>
+                    {% elseif box.currentPlace is same as('waiting_to_order')%}
+                        <i class="fas fa-4x fa-times" style="color: red"></i>
+                    {% endif %}
+
+                {% else %}
+                    <i class="fas fa-4x fa-times" style="color: red"></i>
+                {% endif %}
+
+            </th>
+            <th scope="col">
+                Box Sent <br>
+                {% if box is defined %}
+                    {% if box.currentPlace is same as('approved') %}
+                        <i class="far fa-4x fa-arrow-alt-circle-down" style="color: orange"></i>
+                    {% elseif box.currentPlace is same as('ready_to_send')%}
+                        <i class="fas fa-4x fa-check" style="color: lawngreen"></i>
+                    {% elseif box.currentPlace is same as('waiting_to_order')
+                            or (box.currentPlace is same as('ordered'))
+                            or (box.currentPlace is same as('received'))%}
+                        <i class="fas fa-4x fa-times" style="color: red"></i>
+                    {% endif %}
+
+                {% else %}
+                    <i class="fas fa-4x fa-times" style="color: red"></i>
+                {% endif %}
+
+            </th>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <button class="form-control"
+                    {% if box is defined and box.currentPlace is same as('waiting_to_order')%}
+                        ><a href="{{ path('administration_current_box_choosing') }}">Choose Products</a>
+                    {% elseif box is defined  %}
+                        disabled><em>Ordered</em>
+                    {% elseif box is not defined %}
+                        disabled><em>No active box</em>
+                    {% endif %}
+                </button>
+            </td>
+            <td>
+                <button class="form-control"
+                    {% if box is defined and (box.currentPlace is same as('ordered') or box.currentPlace is same as('received')) %}
+                        ><a href="{{ path('administration_current_box_product_manager') }}">Product Control</a>
+                    {% elseif box is defined and box.currentPlace is same as('waiting_to_order') %}
+                        disabled><em>Waiting for marketing to order...</em>
+                    {% elseif box is not defined %}
+                        disabled><em>No active box</em>
+                    {% else %}
+                        disabled><em>All products checked</em>
+                    {% endif %}
+
+                </button>
+            </td>
+            <td>
+                <button class="form-control"
+                    {% if box is defined and box.currentPlace is same as('approved') %}
+                        ><a href="{{ path('administration_current_box_ready') }}">Approve distribution</a>
+                    {% elseif box is defined and box.currentPlace is same as('waiting_to_order') %}
+                        disabled><em>Waiting for marketing to order...</em>
+                    {% elseif box is defined and (box.currentPlace is same as('ordered') or box.currentPlace is same as('received')) %}
+                        disabled><em>Waiting for PM Approval</em>
+                    {% elseif box is not defined %}
+                        disabled><em>No active box</em>
+                    {% else %}
+                        disabled><em>All products checked</em>
+                    {% endif %}
+                </button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <hr>
+
+
+
+    {% if (box is not defined) and (creatingbox is not defined) %}
+        <button class="form-control" style="max-width: 50%; margin: auto"><a href="{{ path('admin_new_box') }}">New box</a></button>
+    {% endif %}
+    {% if box is defined and box.currentPlace is same as('ready_to_send') %}
+
+        <form action="{{ path('administration_archive') }}" method="post">
+            <input type="text" name="status" value="archive" hidden>
+            <button>Archive current box</button>
+        </form>
+    {% endif %}
+
+
+
+{% endblock %}
+
+

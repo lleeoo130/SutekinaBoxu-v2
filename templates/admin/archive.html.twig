@@ -1,0 +1,41 @@
+{% extends 'admin/main.html.twig' %}
+
+{% block content %}
+    {{ parent() }}
+
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col" colspan="1">#ID</th>
+            <th scope="col" colspan="3">Box Name</th>
+            <th scope="col" colspan="10">Content</th>
+            <th scope="col" colspan="2">Total price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% if boxes is defined %}
+            {% for key, box in boxes %}
+                {% dump(key) %}
+                <tr>
+                    <th scope="row" colspan="1">{{ box.id }}</th>
+                    <td colspan="3">{{ box.name }}</td>
+                    <td colspan="10">
+                        {% for product in box.products %}
+                            {{ product.name }}
+                        {% endfor %}</td>
+                    <td colspan="2">{{ box.price }}</td>
+                </tr>
+            {% endfor %}
+
+        {% endif %}
+
+        </tbody>
+
+
+    </table>
+{% endblock %}
+
+{% block page_title %}
+    Archives
+{% endblock %}
+

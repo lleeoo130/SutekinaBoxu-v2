@@ -1,0 +1,33 @@
+<h2 class="mt-4 p-2">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{{ path('administration_archive') }}" class="
+                                                                     {% if active is not defined %}
+                                                                            dashboard-inactive
+                                                                     {% else %}
+                                                                            dashboard-active
+                                                                     {% endif %}
+
+            ">Previous Boxes</a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('administration_current_box') }}" class="
+                                                                     {% if active is not defined %}
+                                                                            dashboard-active
+                                                                     {% else %}
+                                                                            dashboard-inactive
+                                                                     {% endif %}
+
+            ">Current Box</a>
+        </div>
+        <div class="col-md-4" >
+            <a href="#"class="dashboard-inactive">Others</a>
+        </div>
+    </div>
+
+
+</h2>
+
+
+
+

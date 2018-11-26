@@ -1,0 +1,29 @@
+{% extends 'admin/current_box.html.twig' %}
+
+{% block page_title %}
+    Ready to go
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+
+    <div class="row">
+        <div class="col-md-8">
+            <img src="{{ asset('images/box_ready.png') }}" alt="">
+        </div>
+        <div class="col-md-4">
+            {% if box is defined and box.currentPlace is same as('approved') %}
+            <div class="col-md-6" style="top: 50px; right: 50%;">
+                <form action="{{ path('administration_current_box_ready') }}" method="post">
+                    <input type="text" name="status" value="ready" hidden>
+                    <button>Order is ready</button></form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+
+
+
+

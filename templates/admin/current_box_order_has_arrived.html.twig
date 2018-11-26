@@ -1,0 +1,51 @@
+{% extends 'admin/current_box.html.twig' %}
+
+{% block content %}
+    {{ parent() }}
+
+{% dump(box) %}
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+        <div class="col-md-6">
+            <img src="{{ asset('images/delivery_truck.png') }}" alt="" style="max-width: 100%">
+            <form action="{{ path('administration_current_box_product_manager') }}" method="post">
+                <input type="text" name="status" value="arrived" hidden>
+                <button
+                        {% if box.currentPlace is same as('ordered') %}
+
+                >Order has arrived?</button>
+                        {% elseif box.currentPlace is same as ('received') %}
+                disabled>Order has arrived!</button>
+                        {% endif %}
+
+
+            </form>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ asset('images/check_list.png') }}" alt="" style="max-width: 100%">
+            <form action="{{ path('administration_current_box_product_manager') }}" method="post" >
+                <input type="text" name="status" value="validated" hidden>
+                <button
+                        {% if box.currentPlace is same as('received') %}
+                >Products are good</button>
+                        {% elseif box.currentPlace is same as ('ordered') %}
+                disabled>Waiting for products...</button>
+                        {% endif %}
+            </form>
+            <form action="{{ path('administration_current_box_product_manager') }}" method="post" >
+                <input type="text" name="status" value="refused" hidden>
+                <button
+                        {% if box.currentPlace is same as('received') %}
+                >Products are rubbish</button>
+                        {% elseif box.currentPlace is same as ('ordered') %}
+                disabled>Waiting for products...</button>
+                        {% endif %}
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block page_title %}
+    Review
+{% endblock %}
+
